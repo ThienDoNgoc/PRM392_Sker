@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.group3_sker.Domain.PopularDomain;
+import com.example.group3_sker.Domain.Product;
 import com.example.group3_sker.Helper.ManagementCart;
 import com.example.group3_sker.R;
 
@@ -17,7 +18,7 @@ public class DetailActivity extends AppCompatActivity {
     private Button addToCartBtn;
     private TextView titleTxt, feeTxt, descriptionTxt, reviewTxt, scoreTxt;
     private ImageView picItem, backBtn;
-    private PopularDomain object;
+    private Product object;
     private int NumberOrder = 1;
     private ManagementCart managementCart;
 
@@ -32,24 +33,37 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getBundle() {
-        object = (PopularDomain) getIntent().getSerializableExtra("object");
-        int drawableResourceId = this.getResources().getIdentifier(object.getPicUrl(), "drawable", this.getPackageName());
-        Glide.with(this).load(drawableResourceId).into(picItem);
+        // Retrieve the Product object from Intent extras
+        object = (Product) getIntent().getSerializableExtra("product");
 
-        titleTxt.setText(object.getTitle());
-        feeTxt.setText("$" + object.getPrice());
-        descriptionTxt.setText(object.getDescription());
-        reviewTxt.setText(String.valueOf(object.getReview()));
-        scoreTxt.setText(String.valueOf(object.getScore()));
+        if (object != null) {
+            // Load image using Glide from picUrl
+            Glide.with(this)
+                    .load(object.getPicUrl())
+                    .into(picItem);
 
-        addToCartBtn.setOnClickListener(v -> {
-            object.setNumberInCart(NumberOrder);
-            managementCart.insertFood(object);
-        });
+            // Set other views with Product details
+            titleTxt.setText(object.getName());
+            feeTxt.setText("$" + String.format("%.1f",object.getPrice()));
+            descriptionTxt.setText(object.getDescription());
+            reviewTxt.setText(String.valueOf(object.getReview()));
+            scoreTxt.setText(String.format("%.1f", object.getScore())); // Format score to 1 decimal place
 
-        backBtn.setOnClickListener(v -> {
-            startActivity(new Intent(DetailActivity.this, MainActivity.class));
-        });
+            // Add to Cart button click listener
+            addToCartBtn.setOnClickListener(v -> {
+                object.setNumberInCart(NumberOrder);
+                managementCart.insertFood(object);
+                Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show();
+            });
+
+            // Back button click listener
+            backBtn.setOnClickListener(v -> {
+                startActivity(new Intent(DetailActivity.this, MainActivity.class));
+            });
+        } else {
+            Toast.makeText(this, "Failed to get product details", Toast.LENGTH_SHORT).show();
+            finish(); // Finish activity if product details are not available
+        }
     }
 
     private void initView() {

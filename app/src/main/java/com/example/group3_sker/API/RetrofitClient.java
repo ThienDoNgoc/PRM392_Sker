@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
-    private static final String BASE_URL = "https://localhost:7099/";
+    private static final String BASE_URL = "https://www.sker-api.somee.com/api/";
     private static Retrofit retrofit;
 
     // Singleton pattern

@@ -1,11 +1,16 @@
 package com.example.group3_sker.Domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
+    @SerializedName("product-id")
     private String id;
+    @SerializedName("product-name")
     private String name;
     private String description;
+    @SerializedName("picture-url")
     private String picUrl;
     private int review;
     private double score;
@@ -79,7 +84,7 @@ public class Product implements Serializable {
     }
 
     public double getPrice() {
-        return price;
+        return price/23000;
     }
 
     public void setPrice(double price) {

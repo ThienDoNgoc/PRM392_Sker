@@ -20,71 +20,86 @@ import com.example.group3_sker.Helper.ManagementCart;
 import com.example.group3_sker.R;
 
 public class CartActivity extends AppCompatActivity {
-private RecyclerView.Adapter adapter;
-private RecyclerView recyclerView;
-private ManagementCart managementCart;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView;
+    private ManagementCart managementCart;
 
-private TextView totalFeeTxt, taxTxt, deliveryTxt, totalTxt, emptyTxt;
-private double tax;
-private ScrollView scrollView;
-private ImageView backBtn;
+    private TextView totalFeeTxt, taxTxt, deliveryTxt, totalTxt, emptyTxt;
+    private double tax;
+    private ScrollView scrollView;
+    private ImageView backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        // Initialize ManagementCart to manage cart operations
         managementCart = new ManagementCart(this);
 
+        // Initialize UI elements
         initView();
-        setVariable();
-        initList();
-        calculateCart();
 
+        // Set click listener for back button
+        setVariable();
+
+        // Initialize RecyclerView and set up cart items
+        initList();
+
+        // Calculate cart totals initially
+        calculateCart();
     }
 
     private void initList() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new CartListAdapter(managementCart.getListCart(), this, new ChangeNumberItemsListener(){
 
+        // Initialize adapter with cart items and change listener
+        adapter = new CartListAdapter(managementCart.getListCart(), this, new ChangeNumberItemsListener() {
             @Override
             public void change() {
+                // Update UI when cart items change
                 calculateCart();
             }
         });
         recyclerView.setAdapter(adapter);
-        if (managementCart.getListCart().isEmpty()){
+
+        // Show or hide empty text based on cart items
+        if (managementCart.getListCart().isEmpty()) {
             emptyTxt.setVisibility(View.VISIBLE);
             scrollView.setVisibility(ScrollView.GONE);
-        }else {
+        } else {
             emptyTxt.setVisibility(View.GONE);
             scrollView.setVisibility(ScrollView.VISIBLE);
         }
     }
 
     private void calculateCart() {
+        // Constants for tax and delivery fee
         double percentTax = 0.1;
         double deliveryFee = 10000;
-        double total = 0;
-        tax = Math.round((managementCart.getTotalFee()*percentTax*100.0)/100.0);
 
-        total = Math.round((managementCart.getTotalFee() + tax + deliveryFee)*100.0)/100.0;
+        // Calculate totals
+        double total = Math.round((managementCart.getTotalFee() + tax + deliveryFee) * 100.0) / 100.0;
+        tax = Math.round((managementCart.getTotalFee() * percentTax * 100.0) / 100.0);
 
-        double itemTotal = Math.round(managementCart.getTotalFee()*100.0)/100.0;
-        totalFeeTxt.setText("$"+itemTotal);
-        taxTxt.setText("$"+tax);
-        deliveryTxt.setText("$"+deliveryFee);
-        totalTxt.setText("$"+total);
-
+        // Display calculated values in TextViews
+        double itemTotal = Math.round(managementCart.getTotalFee() * 100.0) / 100.0;
+        totalFeeTxt.setText("$" + itemTotal);
+        taxTxt.setText("$" + tax);
+        deliveryTxt.setText("$" + deliveryFee);
+        totalTxt.setText("$" + total);
     }
 
     private void setVariable() {
+        // Handle back button click to finish activity
         backBtn.setOnClickListener(v -> {
             finish();
         });
     }
 
     private void initView() {
+        // Initialize UI elements from layout
         totalFeeTxt = findViewById(R.id.totalFeeTxt);
         taxTxt = findViewById(R.id.taxTxt);
         deliveryTxt = findViewById(R.id.deliveryTxt);
