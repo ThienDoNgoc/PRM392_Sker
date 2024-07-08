@@ -1,18 +1,25 @@
-package com.example.group3_sker.Domain;
+package com.example.group3_sker.Model;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class PopularDomain implements Serializable {
-    private String title;
+public class Product implements Serializable {
+    @SerializedName("product-id")
+    private String id;
+    @SerializedName("product-name")
+    private String name;
     private String description;
+    @SerializedName("picture-url")
     private String picUrl;
     private int review;
     private double score;
     private int numberInCart;
     private double price;
 
-    public PopularDomain(String title, String description, String picUrl, int review, double score, double price) {
-        this.title = title;
+    public Product(String id, String name, String description, String picUrl, int review, double score, double price) {
+        this.id = id;
+        this.name = name;
         this.description = description;
         this.picUrl = picUrl;
         this.review = review;
@@ -20,20 +27,20 @@ public class PopularDomain implements Serializable {
         this.price = price;
     }
 
-    public double getPrice() {
-        return price;
+    public String getId() {
+        return id;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -76,4 +83,11 @@ public class PopularDomain implements Serializable {
         this.numberInCart = numberInCart;
     }
 
+    public double getPrice() {
+        return price/23000;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

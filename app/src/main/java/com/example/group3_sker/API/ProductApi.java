@@ -1,8 +1,6 @@
 package com.example.group3_sker.API;
 
-import com.example.group3_sker.Domain.Product;
-
-import org.json.JSONObject;
+import com.example.group3_sker.Model.Product;
 
 import java.util.List;
 

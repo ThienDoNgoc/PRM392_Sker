@@ -2,6 +2,7 @@ package com.example.group3_sker.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -18,20 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.group3_sker.API.ProductApi;
 import com.example.group3_sker.API.RetrofitClient;
 import com.example.group3_sker.Adapter.PopularListAdapter;
-import com.example.group3_sker.Domain.Product;
+import com.example.group3_sker.Model.Product;
+
 import com.example.group3_sker.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+
     private RecyclerView recyclerViewPopular;
     private PopularListAdapter adapterPopular;
-    private TextView seeAllTxt, headerTxt;
+    private TextView seeAllTxt, headerTxt, userNameTxt;
     private EditText searchKeywordTxt;
 
     @Override
@@ -39,11 +43,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        userNameTxt = findViewById(R.id.userNameTxt);
+
+        setUserName();
+
         initRecyclerView();
         setupBottomNavigation();
         handleSearch();
         fetchProducts();
     }
+
+    private void setUserName() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String username = sharedPreferences.getString("USERNAME", "User");
+        userNameTxt.setText(username);
+    }
+
 
     private void handleSearch() {
         seeAllTxt = findViewById(R.id.seeAllTxt);
@@ -66,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle click on seeAllTxt
         seeAllTxt.setOnClickListener(v -> {
             if (headerTxt.getText().toString().equals("Popular Products")) {
+                changeRecyclerView();
                 fetchProducts();
                 headerTxt.setText("All Products");
                 seeAllTxt.setText("See Popular");
@@ -87,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             changeRecyclerView(); // Change RecyclerView layout for search results
             fetchSearchProducts(query); // Fetch products based on search query
             headerTxt.setText("Search Results");
-            seeAllTxt.setText("See All");
+            seeAllTxt.setText("Back to Popular");
         }
         hideKeyboard();
     }
@@ -164,4 +180,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

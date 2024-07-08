@@ -1,7 +1,9 @@
 package com.example.group3_sker.Activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -28,14 +30,19 @@ public class CartActivity extends AppCompatActivity {
     private double tax;
     private ScrollView scrollView;
     private ImageView backBtn;
+    private String userId;
+    private Button clearCartBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userId = sharedPreferences.getString("USER_ID", "User");
+
         // Initialize ManagementCart to manage cart operations
-        managementCart = new ManagementCart(this);
+        managementCart = new ManagementCart(this, userId);
 
         // Initialize UI elements
         initView();
@@ -61,7 +68,7 @@ public class CartActivity extends AppCompatActivity {
                 // Update UI when cart items change
                 calculateCart();
             }
-        });
+        }, userId);
         recyclerView.setAdapter(adapter);
 
         // Show or hide empty text based on cart items
@@ -96,6 +103,11 @@ public class CartActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
             finish();
         });
+
+        clearCartBtn.setOnClickListener(v -> {
+            managementCart.clearCart();
+            initList();
+        });
     }
 
     private void initView() {
@@ -108,5 +120,6 @@ public class CartActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView3);
         backBtn = findViewById(R.id.backBtn);
         recyclerView = findViewById(R.id.view3);
+        clearCartBtn = findViewById(R.id.clearCartBtn);
     }
 }

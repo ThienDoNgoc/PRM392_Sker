@@ -1,6 +1,7 @@
 package com.example.group3_sker.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.group3_sker.Domain.Product;
+import com.example.group3_sker.Model.Product;
 import com.example.group3_sker.Helper.ManagementCart;
 import com.example.group3_sker.R;
 
@@ -22,13 +23,18 @@ public class DetailActivity extends AppCompatActivity {
     private int NumberOrder = 1;
     private ManagementCart managementCart;
 
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userId = sharedPreferences.getString("USER_ID", "User");
+
         initView();
-        managementCart = new ManagementCart(this);
+        managementCart = new ManagementCart(this, userId);
         getBundle();
     }
 

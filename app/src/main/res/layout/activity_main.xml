@@ -33,7 +33,7 @@
                 android:layout_marginEnd="24dp">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/userNameTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
@@ -150,7 +150,7 @@
                     android:layout_height="30dp"
                     android:background="@drawable/orange_button_background"
                     android:gravity="center"
-                    android:text="But now"
+                    android:text="Buy now"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout"

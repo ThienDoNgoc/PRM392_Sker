@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
 import com.example.group3_sker.Activity.DetailActivity;
-import com.example.group3_sker.Domain.Product;
+import com.example.group3_sker.Model.Product;
 import com.example.group3_sker.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PopularListAdapter extends RecyclerView.Adapter<PopularListAdapter.ViewHolder> {

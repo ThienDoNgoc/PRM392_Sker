@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
-import com.example.group3_sker.Domain.Product;
+import com.example.group3_sker.Model.Product;
 import com.example.group3_sker.Helper.ChangeNumberItemsListener;
 import com.example.group3_sker.Helper.ManagementCart;
 import com.example.group3_sker.R;
@@ -24,9 +24,12 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     private ManagementCart managementCart;
     private ChangeNumberItemsListener changeNumberItemsListener;
 
-    public CartListAdapter(ArrayList<Product> listItemSelected, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
+    private String userId;
+
+
+    public CartListAdapter(ArrayList<Product> listItemSelected, Context context, ChangeNumberItemsListener changeNumberItemsListener, String userId) {
         this.listItemSelected = listItemSelected;
-        this.managementCart = new ManagementCart(context);
+        this.managementCart = new ManagementCart(context, userId);
         this.changeNumberItemsListener = changeNumberItemsListener;
     }
 
