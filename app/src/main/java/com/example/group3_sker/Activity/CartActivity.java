@@ -1,5 +1,6 @@
 package com.example.group3_sker.Activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -26,11 +27,11 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ManagementCart managementCart;
 
-    private TextView totalFeeTxt, taxTxt, deliveryTxt, totalTxt, emptyTxt;
+    private TextView totalFeeTxt, taxTxt, deliveryTxt, totalTxt, emptyTxt, addressTxt, viewLocaionTv;
     private double tax;
     private ScrollView scrollView;
     private ImageView backBtn;
-    private String userId;
+    private String userId, userAddress;
     private Button clearCartBtn;
 
     @Override
@@ -40,6 +41,7 @@ public class CartActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userId = sharedPreferences.getString("USER_ID", "User");
+        userAddress = sharedPreferences.getString("ADDRESS", "Address");
 
         // Initialize ManagementCart to manage cart operations
         managementCart = new ManagementCart(this, userId);
@@ -56,6 +58,7 @@ public class CartActivity extends AppCompatActivity {
         // Calculate cart totals initially
         calculateCart();
     }
+
 
     private void initList() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -84,7 +87,7 @@ public class CartActivity extends AppCompatActivity {
     private void calculateCart() {
         // Constants for tax and delivery fee
         double percentTax = 0.1;
-        double deliveryFee = 10000;
+        double deliveryFee = 3;
 
         // Calculate totals
         double total = Math.round((managementCart.getTotalFee() + tax + deliveryFee) * 100.0) / 100.0;
@@ -104,6 +107,11 @@ public class CartActivity extends AppCompatActivity {
             finish();
         });
 
+        viewLocaionTv.setOnClickListener(v -> {
+            Intent intent = new Intent(CartActivity.this, MapActivity.class);
+            startActivity(intent);
+        });
+
         clearCartBtn.setOnClickListener(v -> {
             managementCart.clearCart();
             initList();
@@ -121,5 +129,11 @@ public class CartActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         recyclerView = findViewById(R.id.view3);
         clearCartBtn = findViewById(R.id.clearCartBtn);
+        addressTxt = findViewById(R.id.addressTxt);
+        viewLocaionTv = findViewById(R.id.viewLocationTv);
+
+
+        addressTxt.setText(userAddress);
+
     }
 }

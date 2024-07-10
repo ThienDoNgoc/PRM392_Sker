@@ -39,7 +39,7 @@ public class RetrofitClient {
                             Request original = chain.request();
                             Request.Builder requestBuilder = original.newBuilder();
 
-                            // Get the JWT token from shared preferences
+                            // Get the JWT token from SharedPreferences
                             SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                             String token = sharedPreferences.getString("JWT_TOKEN", null);
                             if (token != null) {

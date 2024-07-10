@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "235911271704",
+    "project_id": "group3-sker",
+    "storage_bucket": "group3-sker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235911271704:android:bf968dda662ffd8bc6fa6d",
+        "android_client_info": {
+          "package_name": "com.example.group3_sker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHfsfn_ofzEa-PmE43Q3k6IG4XEzT4BwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
