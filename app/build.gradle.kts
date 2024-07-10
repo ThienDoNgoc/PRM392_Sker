@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.group3_sker"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -45,6 +45,10 @@ dependencies {
 
     //gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //stripe
+    implementation ("com.stripe:stripe-java:26.2.0")
+    implementation("com.stripe:stripe-android:20.48.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)

@@ -1,5 +1,6 @@
 package com.example.group3_sker.Activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -32,12 +33,12 @@ public class CartActivity extends AppCompatActivity {
     private ImageView backBtn;
     private String userId;
     private Button clearCartBtn;
-
+    private Button order_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
+        order_btn = findViewById(R.id.ordBtn);
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userId = sharedPreferences.getString("USER_ID", "User");
 
@@ -55,6 +56,11 @@ public class CartActivity extends AppCompatActivity {
 
         // Calculate cart totals initially
         calculateCart();
+
+        order_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(CartActivity.this, CheckOutActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initList() {

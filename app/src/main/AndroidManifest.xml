@@ -29,6 +29,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activity.CheckOutActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.CartActivity"
             android:exported="false" />
         <activity
@@ -37,7 +40,6 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false">
-
         </activity>
 
     </application>
