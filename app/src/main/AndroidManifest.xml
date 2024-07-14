@@ -19,6 +19,15 @@
         android:theme="@style/Theme.Group3_Sker"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.ProfileNormalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.MainAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.UserListActivity"
             android:exported="false" />
         <activity

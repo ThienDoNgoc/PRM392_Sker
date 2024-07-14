@@ -4,14 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.group3_sker.R;
-import com.example.group3_sker.Model.User;
+import com.example.group3_sker.API.RetrofitClient;
 import com.example.group3_sker.Adapter.UserAdapter;
+import com.example.group3_sker.Model.User;
+import com.example.group3_sker.R;
+import com.example.group3_sker.API.UserApi;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +28,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserListActivity extends AppCompatActivity {
 
     private RecyclerView userList;
@@ -30,6 +39,9 @@ public class UserListActivity extends AppCompatActivity {
     private UserAdapter adapter;
     private DatabaseReference mDatabase;
     private String currentUserId;
+    private UserApi userApi;
+    private ImageView backBtn;
+    private LinearLayout homeBtn, chatBtn, profileBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +66,36 @@ public class UserListActivity extends AppCompatActivity {
         // Initialize Firebase Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // Initialize Retrofit Client
+        userApi = RetrofitClient.getUserApi();
+
         loadUsers();
+
+        // Initialize and set listeners for new buttons
+        backBtn = findViewById(R.id.backBtn);
+        homeBtn = findViewById(R.id.homeBtn);
+        chatBtn = findViewById(R.id.chatBtn);
+        profileBtn = findViewById(R.id.profileBtn);
+
+        backBtn.setOnClickListener(v -> onBackPressed());
+
+        homeBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, MainAdminActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        chatBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, UserListActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        profileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(UserListActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void loadUsers() {
@@ -84,59 +125,27 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     private void fetchUsersDetails(Set<String> userIds) {
-        users.clear(); // Clear existing user list
+        users.clear();
 
-        // Fetch details for each user ID (senderId and receiverId)
         for (String userId : userIds) {
-            // Assuming senderId and receiverId are directly under messages node
-            DatabaseReference senderRef = mDatabase.child("messages").child(userId).child("senderId");
-            DatabaseReference receiverRef = mDatabase.child("messages").child(userId).child("receiverId");
-
-            // Fetch sender details
-            senderRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String senderId = snapshot.getValue(String.class);
-                    fetchUserDetails(senderId);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle error
-                }
-            });
-
-            // Fetch receiver details
-            receiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String receiverId = snapshot.getValue(String.class);
-                    fetchUserDetails(receiverId);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle error
-                }
-            });
+            fetchUserDetails(userId);
         }
     }
 
-    // Method to fetch details of a user based on their ID
     private void fetchUserDetails(String userId) {
-        DatabaseReference userRef = mDatabase.child("users").child(userId); // Adjust this path as per your database structure
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Call<User> call = userApi.getUserById(userId);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                if (user != null) {
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
                     users.add(user); // Add user to the list
-                    adapter.notifyDataSetChanged(); // Update RecyclerView
+                    adapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onFailure(Call<User> call, Throwable t) {
                 // Handle error
             }
         });

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,24 +30,37 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView messageList;
     private EditText messageInput;
     private Button sendButton;
+    private ImageView backbtn;
     private List<Message> messages;
     private MessageAdapter adapter;
 
     private String username;
 
-    private String currentUserId = "current_user_id";
-    //private String chatWithUserId = "156444ac-b2eb-4242-6a73-08dc9f5f3802";
+    private String currentUserId;
 
-    private String chatWithUserId = "2b2a5cad-fb48  -497c-973d-08dc9f167606";
+    private String chatWithUserId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        backbtn = findViewById(R.id.backBtn);
+
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         currentUserId = sharedPreferences.getString("USER_ID", "User");
         username = sharedPreferences.getString("USERNAME", "User");
+
+        if(currentUserId.equals("0e485078-cff1-45e7-61d9-08dca4170e3e")){
+            chatWithUserId = getIntent().getStringExtra("USER_ID");
+        }
+        else{
+            chatWithUserId = "0e485078-cff1-45e7-61d9-08dca4170e3e";
+        }
+
+        backbtn.setOnClickListener(v -> onBackPressed());
+
 
         // Initialize Firebase Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -76,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessage() {
         String text = messageInput.getText().toString().trim();
         if (!text.isEmpty()) {
-            Message message = new Message(username, currentUserId, chatWithUserId, text);
+            Message message = new Message(username, currentUserId, chatWithUserId, text, System.currentTimeMillis());
             mDatabase.child("messages").push().setValue(message);
             messageInput.setText("");
         }
