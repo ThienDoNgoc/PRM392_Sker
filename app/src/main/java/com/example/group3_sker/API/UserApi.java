@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserApi {
     @POST("users/authen")
@@ -17,7 +18,7 @@ public interface UserApi {
     @GET("users/me")
     public Call<User> getUser();
     @GET("users/{id}")
-    public Call<User> getUserById(String id);
+    Call<User> getUserById(@Path("id") String id);
     @POST("users/register")
     public Call<Void> registerUser(@Body User user);
 }

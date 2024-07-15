@@ -98,11 +98,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    saveUserIdAndUsernameAndAddress(user.getId(), user.getUsername(), user.getAddress());
-                    // Redirect to MainActivity
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    saveUser(user.getId(), user.getUsername(), user.getAddress(), user.getEmail(), user.getPhone());
+
+                    if (!user.getId().equals("0e485078-cff1-45e7-61d9-08dca4170e3e")) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, MainAdminActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 } else {
                     Toast.makeText(LoginActivity.this, "Failed to fetch user details", Toast.LENGTH_SHORT).show();
                 }
@@ -110,17 +116,20 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Network error. Please try again later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-    private void saveUserIdAndUsernameAndAddress(String userId, String username, String address) {
+    private void saveUser(String userId, String username, String address, String email, String phone) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("USER_ID", userId);
         editor.putString("USERNAME", username);
         editor.putString("ADDRESS", address);
+        editor.putString("EMAIL", email);
+        editor.putString("PHONE", phone);
         editor.apply();
     }
 }

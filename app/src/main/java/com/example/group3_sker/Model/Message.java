@@ -11,11 +11,12 @@ public class Message {
         // Default constructor required for calls to DataSnapshot.getValue(Message.class)
     }
 
-    public Message(String username, String senderId, String receiverId, String text) {
+    public Message(String username, String senderId, String receiverId, String text, long timestamp) {
         this.username = username;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.text = text;
+        this.timestamp = timestamp;
     }
 
     public String getUsername() {

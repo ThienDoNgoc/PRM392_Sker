@@ -116,32 +116,13 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/red_banner"
+                    android:background="@drawable/sker_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Discount 20%"
-                        android:textColor="@color/white"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:srcCompat="@drawable/girl" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -176,6 +157,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/adidasLn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -196,7 +178,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/cat1" />
+                            app:srcCompat="@drawable/adidas" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -204,12 +186,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="PC"
+                        android:text="Adidas"
                         android:textAlignment="center"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/nikeLn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -230,7 +213,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/cat2" />
+                            app:srcCompat="@drawable/nike" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -238,12 +221,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Phone"
+                        android:text="Nike"
                         android:textAlignment="center"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/pumaLn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -264,7 +248,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/cat3" />
+                            app:srcCompat="@drawable/animal" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -272,12 +256,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Headphone"
+                        android:text="Puma"
                         android:textAlignment="center"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/gucciLn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -298,7 +283,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/cat4" />
+                            app:srcCompat="@drawable/clothes" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -306,12 +291,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Gaming"
+                        android:text="Gucci"
                         android:textAlignment="center"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/allLn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -415,7 +401,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/btn_1" />
+                        app:srcCompat="@drawable/home" />
 
 
                     <TextView
@@ -423,9 +409,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Explorer"
+                        android:text="Home"
                         android:textAlignment="center"
-                        android:textColor="@color/red" />
+                        android:textColor="@color/grey" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -442,7 +428,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/review" />
+                        app:srcCompat="@drawable/chat" />
 
 
                     <TextView
@@ -450,9 +436,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Chat with store"
+                        android:text="Chat"
                         android:textAlignment="center"
-                        android:textColor="@color/red" />
+                        android:textColor="@color/grey" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -483,6 +469,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/profileBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"

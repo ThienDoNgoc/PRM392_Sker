@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView seeAllTxt, headerTxt, userNameTxt;
     private EditText searchKeywordTxt;
 
+    private LinearLayout adidasLn, nikeLn, pumaLn, gucciLn, allLn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,43 @@ public class MainActivity extends AppCompatActivity {
         setUserName();
 
         initRecyclerView();
+        setupBrandFilter();
         setupBottomNavigation();
         handleSearch();
         fetchProducts();
+    }
+
+    private void setupBrandFilter() {
+        adidasLn = findViewById(R.id.adidasLn);
+        nikeLn = findViewById(R.id.nikeLn);
+        pumaLn = findViewById(R.id.pumaLn);
+        gucciLn = findViewById(R.id.gucciLn);
+        allLn = findViewById(R.id.allLn);
+
+        adidasLn.setOnClickListener(v -> {
+            changeRecyclerView();
+            fetchSearchProducts(null, "Adidas");
+        });
+
+        nikeLn.setOnClickListener(v -> {
+            changeRecyclerView();
+            fetchSearchProducts(null, "Nike");
+        });
+
+        pumaLn.setOnClickListener(v -> {
+            changeRecyclerView();
+            fetchSearchProducts(null, "Others");
+        });
+
+        gucciLn.setOnClickListener(v -> {
+            changeRecyclerView();
+            fetchSearchProducts(null, "Gucci");
+        });
+
+        allLn.setOnClickListener(v -> {
+            changeRecyclerView();
+            fetchProducts();
+        });
     }
 
     private void setUserName() {
@@ -101,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             seeAllTxt.setText("See Popular");
         } else {
             changeRecyclerView(); // Change RecyclerView layout for search results
-            fetchSearchProducts(query); // Fetch products based on search query
+            fetchSearchProducts(query, null); // Fetch products based on search query
             headerTxt.setText("Search Results");
             seeAllTxt.setText("Back to Popular");
         }
@@ -117,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout homeBtn = findViewById(R.id.homeBtn);
         LinearLayout cartBtn = findViewById(R.id.cartBtn);
         LinearLayout chatBtn = findViewById(R.id.chatBtn);
+        LinearLayout profileBtn = findViewById(R.id.profileBtn);
 
         chatBtn.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, UserListActivity.class));
+            startActivity(new Intent(MainActivity.this, ChatActivity.class));
         });
 
         homeBtn.setOnClickListener(v -> {
@@ -128,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
         cartBtn.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, CartActivity.class));
+        });
+
+        profileBtn.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ProfileNormalActivity.class));
         });
     }
 
@@ -165,9 +206,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchSearchProducts(String query) {
+    private void fetchSearchProducts(String query, String brand) {
         ProductApi productApi = RetrofitClient.getProductApi();
-        Call<List<Product>> call = productApi.getProducts(query, null);
+        Call<List<Product>> call = productApi.getProducts(query, brand);
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
