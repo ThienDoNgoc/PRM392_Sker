@@ -102,7 +102,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // Create a new user object
-        User user = new User(username, password, email, fullname, "FPTU", phone, "string", "string");
+        User user = new User(username, password, email, fullname, "Nha van hoa sinh vien, Binh Duong", phone, "string", "string");
 
         registerUser(user);
     }

@@ -17,6 +17,7 @@ import com.example.group3_sker.Model.LoginRequest;
 import com.example.group3_sker.Model.LoginResponse;
 import com.example.group3_sker.Model.User;
 import com.example.group3_sker.R;
+import com.google.firebase.FirebaseApp;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize RetrofitClient with context
         RetrofitClient.initialize(this);
+        FirebaseApp.initializeApp(this);
 
         usernameEditText = findViewById(R.id.et_email);
         passwordEditText = findViewById(R.id.et_password);
@@ -96,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    saveUserIdAndUsername(user.getId(), user.getUsername());
+                    saveUserIdAndUsernameAndAddress(user.getId(), user.getUsername(), user.getAddress());
                     // Redirect to MainActivity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -113,11 +115,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUserIdAndUsername(String userId, String username) {
+    private void saveUserIdAndUsernameAndAddress(String userId, String username, String address) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("USER_ID", userId);
         editor.putString("USERNAME", username);
+        editor.putString("ADDRESS", address);
         editor.apply();
     }
 }

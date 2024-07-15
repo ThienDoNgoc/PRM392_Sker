@@ -429,6 +429,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/chatBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
@@ -436,12 +437,12 @@
 
                     <ImageView
                         android:id="@+id/imageView11"
-                        android:layout_width="wrap_content"
+                        android:layout_width="27dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/btn_2" />
+                        app:srcCompat="@drawable/review" />
 
 
                     <TextView
@@ -449,9 +450,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Wishlist"
+                        android:text="Chat with store"
                         android:textAlignment="center"
-                        android:textColor="@color/grey" />
+                        android:textColor="@color/red" />
                 </LinearLayout>
 
                 <LinearLayout

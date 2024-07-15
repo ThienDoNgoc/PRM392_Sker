@@ -2,6 +2,7 @@ package com.example.group3_sker.API;
 
 import com.example.group3_sker.Model.LoginRequest;
 import com.example.group3_sker.Model.LoginResponse;
+import com.example.group3_sker.Model.Product;
 import com.example.group3_sker.Model.User;
 
 import retrofit2.Call;
@@ -15,6 +16,8 @@ public interface UserApi {
     public Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
     @GET("users/me")
     public Call<User> getUser();
+    @GET("users/{id}")
+    public Call<User> getUserById(String id);
     @POST("users/register")
     public Call<Void> registerUser(@Body User user);
 }

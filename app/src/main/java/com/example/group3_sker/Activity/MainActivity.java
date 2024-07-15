@@ -116,6 +116,11 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         LinearLayout homeBtn = findViewById(R.id.homeBtn);
         LinearLayout cartBtn = findViewById(R.id.cartBtn);
+        LinearLayout chatBtn = findViewById(R.id.chatBtn);
+
+        chatBtn.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, UserListActivity.class));
+        });
 
         homeBtn.setOnClickListener(v -> {
             // No need to restart MainActivity, as it's already the current activity
