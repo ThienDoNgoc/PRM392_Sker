@@ -64,7 +64,6 @@ public class RetrofitClient {
     public static ProductApi getProductApi() {
         return get().create(ProductApi.class);
     }
-
     public static UserApi getUserApi() {
         return get().create(UserApi.class);
     }
