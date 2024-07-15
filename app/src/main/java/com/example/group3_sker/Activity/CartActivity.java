@@ -1,5 +1,6 @@
 package com.example.group3_sker.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.app.AlertDialog;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +38,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class CartActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
@@ -50,10 +53,12 @@ public class CartActivity extends AppCompatActivity {
     private PaymentSheet paymentSheet;
     private String paymentClientSecret;
     private String total;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
         order_btn = findViewById(R.id.ordBtn);
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userId = sharedPreferences.getString("USER_ID", "User");
@@ -72,7 +77,11 @@ public class CartActivity extends AppCompatActivity {
         initList();
 
         // Calculate cart totals initially
-        calculateCart();
+        total = calculateCart();
+
+        // Initialize PaymentSheet
+        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
+        PaymentConfiguration.init(this, "pk_test_51PWYf1FlKO9DUXup3pZcE1Mys2b6g2fzgUuNSWVoaii9loGJf35iWvrzWOZUCLe1bpwtyx8OHD2ZGy5G60yOSaI600e0Lm3s4X");
 
         order_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +95,8 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
         });
+
+        fetchPaymentIntent();
     }
 
     private void initList() {
@@ -105,11 +116,14 @@ public class CartActivity extends AppCompatActivity {
         // Show or hide empty text based on cart items
         if (managementCart.getListCart().isEmpty()) {
             emptyTxt.setVisibility(View.VISIBLE);
-            scrollView.setVisibility(ScrollView.GONE);
+            scrollView.setVisibility(View.GONE);
         } else {
             emptyTxt.setVisibility(View.GONE);
-            scrollView.setVisibility(ScrollView.VISIBLE);
+            scrollView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void fetchPaymentIntent() {
         total = calculateCart();
         Log.d(TAG, "Total before API call: " + total);
 
@@ -134,9 +148,6 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(CartActivity.this, "Network error. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
-
-        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
-        PaymentConfiguration.init(this, "pk_test_51PWYf1FlKO9DUXup3pZcE1Mys2b6g2fzgUuNSWVoaii9loGJf35iWvrzWOZUCLe1bpwtyx8OHD2ZGy5G60yOSaI600e0Lm3s4X");
     }
 
     private String calculateCart() {
@@ -161,12 +172,9 @@ public class CartActivity extends AppCompatActivity {
         return Integer.toString(totalInt);
     }
 
-
     private void setVariable() {
         // Handle back button click to finish activity
-        backBtn.setOnClickListener(v -> {
-            finish();
-        });
+        backBtn.setOnClickListener(v -> finish());
 
         viewLocaionTv.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, MapActivity.class);
@@ -174,8 +182,14 @@ public class CartActivity extends AppCompatActivity {
         });
 
         clearCartBtn.setOnClickListener(v -> {
-            managementCart.clearCart();
-            initList();
+            try {
+                managementCart.clearCart();
+                adapter.notifyDataSetChanged();
+                initList();
+            } catch (Exception e) {
+                Log.e(TAG, "Error clearing cart: " + e.getMessage());
+                Toast.makeText(CartActivity.this, "Error clearing cart", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -191,7 +205,10 @@ public class CartActivity extends AppCompatActivity {
             Log.e(TAG, "Payment failed: ", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             Log.d(TAG, "Payment completed");
-            // Display, for example, an order confirmation screen
+            showOrderConfirmationDialog();
+            managementCart.clearCart();
+            adapter.notifyDataSetChanged();
+            initList();
         }
     }
 
@@ -209,8 +226,25 @@ public class CartActivity extends AppCompatActivity {
         addressTxt = findViewById(R.id.addressTxt);
         viewLocaionTv = findViewById(R.id.viewLocationTv);
 
-
+        // Set the user address in the address TextView
         addressTxt.setText(userAddress);
+    }
+    private void showOrderConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Order Successfully");
+        builder.setMessage("Your order has been successfully processed.");
 
+        // Add a button to dismiss the dialog
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Handle button click (if needed)
+                dialogInterface.dismiss(); // Dismiss the dialog
+            }
+        });
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
