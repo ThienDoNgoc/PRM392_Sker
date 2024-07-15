@@ -34,7 +34,6 @@ public class CheckOutActivity extends AppCompatActivity {
         StripeApi stripeApi = RetrofitStripe.getStripeApi();
         button = findViewById(R.id.pay_button);
 
-        Log.d(TAG, "Starting Retrofit call");
         Call<PaymentIntent> call = stripeApi.getPaymentIntent("2001", "usd");
         call.enqueue(new Callback<PaymentIntent>() {
             @Override
