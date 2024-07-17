@@ -6,6 +6,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+
+
+
 
     <application
         android:name=".Helper.MyApplication"
@@ -14,10 +25,31 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/sker_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/sker_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Group3_Sker"
         tools:targetApi="31">
+        <service
+            android:name=".Helper.NotificationService"
+            android:foregroundServiceType="location"
+            android:exported="false"
+            tools:ignore="ForegroundServicePermission">
+            <intent-filter>
+                <action android:name="your.app.domain.NotificationService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+
+
+        <receiver android:name=".Helper.BootReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+
         <activity
             android:name=".Activity.ProfileNormalActivity"
             android:exported="false" />

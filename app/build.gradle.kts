@@ -34,39 +34,42 @@ android {
 }
 
 dependencies {
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.0.0"))  // Use the latest BOM version
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-appcheck")
 
+    // Gson
     implementation("com.google.code.gson:gson:2.10.1")
+
+    // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
-    // Gson converter
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    //stripe
-    implementation ("com.stripe:stripe-java:26.2.0")
+    // Stripe
+    implementation("com.stripe:stripe-java:26.2.0")
     implementation("com.stripe:stripe-android:20.48.0")
 
-    // Maps
+    // Google Play Services
     implementation("com.google.android.gms:play-services-maps:18.0.2")
-
-    // Google Play Services Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    // AndroidX
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation("androidx.multidex:multidex:2.0.1")
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

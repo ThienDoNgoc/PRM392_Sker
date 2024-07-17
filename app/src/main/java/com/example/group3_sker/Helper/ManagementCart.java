@@ -76,4 +76,13 @@ public class ManagementCart {
         }
         return fee;
     }
+
+    public int getTotalItemCount() {
+        ArrayList<Product> listItem = getListCart();
+        int totalItemCount = 0;
+        for (Product product : listItem) {
+            totalItemCount += product.getNumberInCart();
+        }
+        return totalItemCount;
+    }
 }
