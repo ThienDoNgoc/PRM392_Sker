@@ -107,7 +107,7 @@ public class CartActivity extends AppCompatActivity {
         adapter = new CartListAdapter(managementCart.getListCart(), this, new ChangeNumberItemsListener() {
             @Override
             public void change() {
-                // Update UI when cart items change
+                fetchPaymentIntent();
                 total = calculateCart();
             }
         }, userId);
