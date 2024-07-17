@@ -108,6 +108,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void change() {
                 // Update UI when cart items change
+                fetchPaymentIntent();
                 total = calculateCart();
             }
         }, userId);

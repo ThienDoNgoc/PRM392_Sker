@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -30,6 +31,7 @@ public class NotificationService extends Service {
     private final String TAG = "Timers";
     private final int Your_X_SECS = 5;
     private final String CHANNEL_ID = "NotificationChannel";
+    private String userId;
 
     @Nullable
     @Override
@@ -49,16 +51,24 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        // Retrieve userId from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userId = sharedPreferences.getString("USER_ID", "User");
+
         createNotificationChannel();
-        startForeground(NOTIFICATION_ID, buildNotification());
+        startForeground(NOTIFICATION_ID, buildNotification("Service is running", "Your cart notifications are active"));
     }
 
-    private Notification buildNotification() {
+    private Notification buildNotification(String title, String text) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Service is running")
-                .setContentText("Your cart notifications are active")
+                .setContentTitle(title)
+                .setContentText(text)
                 .setSmallIcon(R.drawable.sker_logo_new)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
 
         return builder.build();
     }
@@ -75,7 +85,7 @@ public class NotificationService extends Service {
     public void startTimer() {
         timer = new Timer();
         initializeTimerTask();
-        timer.schedule(timerTask, 5000, Your_X_SECS * 1000);
+        timer.schedule(timerTask, 5000, Your_X_SECS * 10000);
     }
 
     public void stoptimertask() {
@@ -98,28 +108,22 @@ public class NotificationService extends Service {
         };
     }
 
-
+    @SuppressLint("NotificationPermission")
     private void sendNotification() {
-        Log.e(TAG, "Sending notification");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.sker_logo_new)
-                .setContentTitle("Cart Reminder")
-                .setContentText("Your cart is not paid yet!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true);
+        ManagementCart managementCart = new ManagementCart(this, userId);
+        int totalItemCount = managementCart.getTotalItemCount();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        builder.setContentIntent(pendingIntent);
+        String notificationText = "Your cart has " + totalItemCount + " item" + (totalItemCount != 1 ? "s" : "") + " not paid yet!";
+        Log.e(TAG, "Sending notification with text: " + notificationText);
+        Notification notification = buildNotification("Cart Reminder", notificationText);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
-            notificationManager.notify(NOTIFICATION_ID, builder.build());
+            notificationManager.notify(NOTIFICATION_ID, notification);
         } else {
             Log.e(TAG, "NotificationManager is null, cannot send notification");
         }
     }
-
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -138,5 +142,4 @@ public class NotificationService extends Service {
             }
         }
     }
-
 }
