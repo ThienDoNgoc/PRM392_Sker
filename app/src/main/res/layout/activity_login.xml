@@ -61,11 +61,11 @@
             android:inputType="textPassword"
             android:padding="10dp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_background"
+            android:background="@drawable/signin_btn_background"
             android:text="Sign In"
             android:textColor="#FFFFFF" />
 

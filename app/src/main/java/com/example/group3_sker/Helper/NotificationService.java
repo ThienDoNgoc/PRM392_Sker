@@ -29,9 +29,10 @@ public class NotificationService extends Service {
     private Timer timer;
     private TimerTask timerTask;
     private final String TAG = "Timers";
-    private final int Your_X_SECS = 5;
+    private final int Your_X_SECS = 10;
     private final String CHANNEL_ID = "NotificationChannel";
     private String userId;
+    String notificationText;
 
     @Nullable
     @Override
@@ -113,7 +114,13 @@ public class NotificationService extends Service {
         ManagementCart managementCart = new ManagementCart(this, userId);
         int totalItemCount = managementCart.getTotalItemCount();
 
-        String notificationText = "Your cart has " + totalItemCount + " item" + (totalItemCount != 1 ? "s" : "") + " not paid yet!";
+        if(totalItemCount > 0){
+             notificationText = "Your cart has " + totalItemCount + " item" + (totalItemCount != 1 ? "s" : "") + " not paid yet!";
+        }
+        else{
+            notificationText = "You are all done!";
+        }
+
         Log.e(TAG, "Sending notification with text: " + notificationText);
         Notification notification = buildNotification("Cart Reminder", notificationText);
 
