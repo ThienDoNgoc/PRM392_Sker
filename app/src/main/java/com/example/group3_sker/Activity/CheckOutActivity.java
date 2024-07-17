@@ -1,6 +1,5 @@
 package com.example.group3_sker.Activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.group3_sker.API.RetrofitStripe;
 import com.example.group3_sker.API.StripeApi;
-import com.example.group3_sker.Helper.ManagementCart;
 import com.example.group3_sker.R;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
@@ -26,26 +24,15 @@ import retrofit2.Response;
 public class CheckOutActivity extends AppCompatActivity {
     private static final String TAG = "CheckOutActivity";
     private PaymentSheet paymentSheet;
-    private String paymentClientSecret, userId;
-    private ManagementCart managementCart;
+    private String paymentClientSecret;
     private Button button;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        userId = sharedPreferences.getString("USER_ID", "User");
-
-        managementCart = new ManagementCart(this, userId);
-
         StripeApi stripeApi = RetrofitStripe.getStripeApi();
         button = findViewById(R.id.pay_button);
-
-        // Initialize PaymentConfiguration and PaymentSheet
-        PaymentConfiguration.init(this, "pk_test_51PWYf1FlKO9DUXup3pZcE1Mys2b6g2fzgUuNSWVoaii9loGJf35iWvrzWOZUCLe1bpwtyx8OHD2ZGy5G60yOSaI600e0Lm3s4X");
-        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
 
         Call<PaymentIntent> call = stripeApi.getPaymentIntent("2001", "usd");
         call.enqueue(new Callback<PaymentIntent>() {
@@ -67,6 +54,9 @@ public class CheckOutActivity extends AppCompatActivity {
                 Toast.makeText(CheckOutActivity.this, "Network error. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
+        PaymentConfiguration.init(this, "pk_test_51PWYf1FlKO9DUXup3pZcE1Mys2b6g2fzgUuNSWVoaii9loGJf35iWvrzWOZUCLe1bpwtyx8OHD2ZGy5G60yOSaI600e0Lm3s4X");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
